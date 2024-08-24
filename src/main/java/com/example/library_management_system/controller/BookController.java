@@ -1,11 +1,17 @@
 package com.example.library_management_system.controller;
 
 import com.example.library_management_system.dto.request.AddBookRequest;
+import com.example.library_management_system.dto.request.BorrowBookRequest;
 import com.example.library_management_system.dto.response.AddBookResponse;
+import com.example.library_management_system.dto.response.BorrowBookResponse;
 import com.example.library_management_system.enums.ResponseStatus;
 import com.example.library_management_system.model.Book;
+import com.example.library_management_system.model.UserPrincipal;
 import com.example.library_management_system.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,8 +39,14 @@ public class BookController {
         return response;
     }
 
+
     @GetMapping("/api/book/getBooks")
-    public List<Book> getBooks(){
-        return bookService.getBooks();
+    public List<Book> listAvailableBooks(){
+        return bookService.listAvailableBooks();
+    }
+
+    @PostMapping("/api/book/borrow")
+    public BorrowBookResponse borrowBook(@RequestBody BorrowBookRequest request) {
+        return bookService.borrowBook( request);
     }
 }
