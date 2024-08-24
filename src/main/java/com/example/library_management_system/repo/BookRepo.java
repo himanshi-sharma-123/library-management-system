@@ -10,4 +10,9 @@ import java.util.List;
 public interface BookRepo extends JpaRepository<Book, Integer> {
     List<Book> findByStockGreaterThan(Integer stock);
 
+//    List<Book> findByBookName(String bookName);
+
+    List<Book> findByBookNameOrAuthorNameOrGenre(String bookName, String authorName, String genre);
+
+
 }

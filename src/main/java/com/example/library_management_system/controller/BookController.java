@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -49,5 +46,10 @@ public class BookController {
     @PostMapping("/api/book/borrow")
     public BorrowBookResponse borrowBook(@RequestBody BorrowBookRequest request) {
         return bookService.borrowBook( request);
+    }
+
+    @GetMapping("/api/book/search")
+    public List<Book> searchBooks(@RequestParam("keyword") String keyword) {
+        return bookService.searchBooks(keyword);
     }
 }

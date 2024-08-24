@@ -65,4 +65,8 @@ public class BookService {
         }).collect(Collectors.toList());
     }
 
+    public List<Book> searchBooks(String keyword) {
+        return bookRepo.findByBookNameOrAuthorNameOrGenre(keyword, keyword, keyword);
+    }
+
 }
