@@ -3,6 +3,7 @@ package com.example.library_management_system.controller;
 import com.example.library_management_system.dto.request.AddBookRequest;
 import com.example.library_management_system.dto.request.BorrowBookRequest;
 import com.example.library_management_system.dto.response.AddBookResponse;
+import com.example.library_management_system.dto.response.AvailableBookResponse;
 import com.example.library_management_system.dto.response.BorrowBookResponse;
 import com.example.library_management_system.enums.ResponseStatus;
 import com.example.library_management_system.model.Book;
@@ -41,7 +42,7 @@ public class BookController {
 
 
     @GetMapping("/api/book/getBooks")
-    public List<Book> listAvailableBooks(){
+    public List<AvailableBookResponse> listAvailableBooks(){
         return bookService.listAvailableBooks();
     }
 

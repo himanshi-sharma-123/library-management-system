@@ -2,6 +2,7 @@ package com.example.library_management_system.service;
 
 import com.example.library_management_system.dto.request.AddBookRequest;
 import com.example.library_management_system.dto.request.BorrowBookRequest;
+import com.example.library_management_system.dto.response.AvailableBookResponse;
 import com.example.library_management_system.dto.response.BorrowBookResponse;
 import com.example.library_management_system.model.Book;
 import com.example.library_management_system.model.User;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -50,8 +52,17 @@ public class BookService {
     }
 
 
-    public List<Book> listAvailableBooks() {
-        return bookRepo.findAll();
+    public List<AvailableBookResponse> listAvailableBooks() {
+        List<Book> availableBooks = bookRepo.findByStockGreaterThan(0);
+        return availableBooks.stream().map(book -> {
+            AvailableBookResponse response = new AvailableBookResponse();
+            response.setId(book.getId());
+            response.setBookName(book.getBookName());
+            response.setAuthorName(book.getAuthorName());
+            response.setGenre(book.getGenre());
+            response.setStock(book.getStock());
+            return response;
+        }).collect(Collectors.toList());
     }
 
 }
