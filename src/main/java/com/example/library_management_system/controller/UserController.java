@@ -33,16 +33,8 @@ public class UserController {
         return response;
     }
 
-//    public AddBookResponse addBook(@RequestBody AddBookRequest bookRequest){
-//        AddBookResponse response = new AddBookResponse();
-//        try {
-//            Book savedBook = bookService.addBook(bookRequest);
-//            response.setId(savedBook.getId());
-//            response.setResponseStatus(com.example.library_management_system.enums.ResponseStatus.SUCCESS);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            response.setResponseStatus(ResponseStatus.FAILED);
-//        }
-//        return response;
-//    }
+    @PostMapping("/api/login")
+    public String login(@RequestBody User user){
+        return userService.verify(user);
+    }
 }
