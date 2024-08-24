@@ -5,8 +5,10 @@ import com.example.library_management_system.dto.request.BorrowBookRequest;
 import com.example.library_management_system.dto.response.AvailableBookResponse;
 import com.example.library_management_system.dto.response.BorrowBookResponse;
 import com.example.library_management_system.model.Book;
+import com.example.library_management_system.model.HistoryOfBook;
 import com.example.library_management_system.model.User;
 import com.example.library_management_system.repo.BookRepo;
+import com.example.library_management_system.repo.HistoryOfBookRepo;
 import com.example.library_management_system.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class BookService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private HistoryOfBookRepo historyOfBookRepo;
 
     public Book addBook(AddBookRequest request) {
         Book book = new Book();
@@ -69,4 +74,7 @@ public class BookService {
         return bookRepo.findByBookNameOrAuthorNameOrGenre(keyword, keyword, keyword);
     }
 
+    public List<HistoryOfBook> getBorrowHistory(User user) {
+        return historyOfBookRepo.findByUser(user);
+    }
 }

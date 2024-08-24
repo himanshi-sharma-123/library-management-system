@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface HistoryOfBookRepo extends JpaRepository<HistoryOfBook, Integer> {
     List<HistoryOfBook> findByUserAndBookAndReturnDateIsNull(User user, Book book);
+
+    List<HistoryOfBook> findByUser(User user);
 }
