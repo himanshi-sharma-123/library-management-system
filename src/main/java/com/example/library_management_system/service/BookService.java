@@ -84,7 +84,4 @@ public class BookService {
         return bookRepo.findByBookNameOrAuthorNameOrGenre(keyword, keyword, keyword);
     }
 
-    public List<HistoryOfBook> getBorrowHistory(User user) {
-        return historyOfBookRepo.findByUser(user);
-    }
 }

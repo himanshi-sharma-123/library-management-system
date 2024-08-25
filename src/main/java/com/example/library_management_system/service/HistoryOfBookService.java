@@ -43,4 +43,8 @@ public class HistoryOfBookService {
 
         return "Book returned successfully";
     }
+
+    public List<HistoryOfBook> getBorrowHistory(User user) {
+        return historyOfBookRepo.findByUser(user);
+    }
 }

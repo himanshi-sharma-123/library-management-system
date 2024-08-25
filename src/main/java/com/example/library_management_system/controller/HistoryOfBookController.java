@@ -2,6 +2,7 @@ package com.example.library_management_system.controller;
 
 import com.example.library_management_system.model.HistoryOfBook;
 import com.example.library_management_system.model.User;
+import com.example.library_management_system.model.UserPrincipal;
 import com.example.library_management_system.service.BookService;
 import com.example.library_management_system.service.HistoryOfBookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,6 @@ public class HistoryOfBookController {
 
     @GetMapping("/api/borrow/history")
     public List<HistoryOfBook> getBorrowHistory(@AuthenticationPrincipal User user) {
-        return bookService.getBorrowHistory(user);
+        return historyOfBookService.getBorrowHistory(user);
     }
 }
