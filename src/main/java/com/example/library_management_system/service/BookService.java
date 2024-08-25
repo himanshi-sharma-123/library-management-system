@@ -13,6 +13,7 @@ import com.example.library_management_system.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ public class BookService {
         return bookRepo.save(book);
     }
 
-    public BorrowBookResponse borrowBook(BorrowBookRequest request) {
+    public BorrowBookResponse borrowBook(String username, BorrowBookRequest request) {
         BorrowBookResponse response = new BorrowBookResponse();
 
         Book book = bookRepo.findById(request.getBookId())
@@ -49,8 +50,17 @@ public class BookService {
             return response;
         }
 
+        User user = userRepo.findByUsername(username);
+
+
         book.setStock(book.getStock() - 1);
         bookRepo.save(book);
+
+        HistoryOfBook history = new HistoryOfBook();
+        history.setUser(user);
+        history.setBook(book);
+        history.setBorrowedDate(new Date());
+        historyOfBookRepo.save(history);
 
         response.setMessage("Book borrowed successfully");
         return response;
