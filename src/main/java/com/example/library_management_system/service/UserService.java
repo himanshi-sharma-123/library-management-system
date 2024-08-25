@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -47,14 +49,10 @@ public class UserService {
         return "fail";
     }
 
-//    public Book addBook(AddBookRequest request) {
-//        Book book = new Book();
-//        book.setBookName(request.getBookName());
-//        book.setAuthorName(request.getAuthorName());
-//        book.setGenre(request.getGenre());
-//        book.setStock(request.getStock());
-//
-//        return bookRepo.save(book);
-//    }
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
+    }
+
+
 
 }

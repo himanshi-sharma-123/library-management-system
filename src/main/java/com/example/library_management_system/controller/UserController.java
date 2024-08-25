@@ -9,6 +9,7 @@ import com.example.library_management_system.model.Book;
 import com.example.library_management_system.model.User;
 import com.example.library_management_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,5 +37,10 @@ public class UserController {
     @PostMapping("/api/login")
     public String login(@RequestBody User user){
         return userService.verify(user);
+    }
+
+    @GetMapping("/api/getUsers")
+    public List<User> getAllUsers(){
+        return userService.getAllUsers();
     }
 }
