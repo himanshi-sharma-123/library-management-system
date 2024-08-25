@@ -22,9 +22,14 @@ public class HistoryOfBookService {
     private BookRepo bookRepo;
 
     public String returnBook(User user, Integer bookId) {
+
+        if (user == null) {
+            return "User is not authenticated.";
+        }
+
         Optional<Book> bookOptional = bookRepo.findById(bookId);
         if (bookOptional.isEmpty()) {
-            return "Book not found";
+            return "Book not found.";
         }
 
         Book book = bookOptional.get();
@@ -41,7 +46,7 @@ public class HistoryOfBookService {
         book.setStock(book.getStock() + 1);
         bookRepo.save(book);
 
-        return "Book returned successfully";
+        return "Book returned successfully.";
     }
 
     public List<HistoryOfBook> getBorrowHistory(User user) {

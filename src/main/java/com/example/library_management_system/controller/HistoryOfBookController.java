@@ -6,6 +6,7 @@ import com.example.library_management_system.model.UserPrincipal;
 import com.example.library_management_system.service.BookService;
 import com.example.library_management_system.service.HistoryOfBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +26,11 @@ public class HistoryOfBookController {
 
 
     @PostMapping("/api/book/return")
-    public String returnBook(@AuthenticationPrincipal User user, @RequestParam("bookId") Integer bookId) {
-        return historyOfBookService.returnBook(user, bookId);
+    public ResponseEntity<String> returnBook(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("bookId") Integer bookId) {
+        User user = userPrincipal.getUser();
+        String result = historyOfBookService.returnBook(user, bookId);
+        return ResponseEntity.ok(result);
     }
-
 
     @GetMapping("/api/borrow/history")
     public List<HistoryOfBook> getBorrowHistory(@AuthenticationPrincipal User user) {
