@@ -1,5 +1,6 @@
 package com.example.library_management_system.model;
 
+import com.example.library_management_system.enums.UserType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,10 @@ public class UserPrincipal implements UserDetails {
 
     public UserPrincipal(User user) {
         this.user = user;
+    }
+
+    public UserType getUserType() {
+        return user.getUserType();
     }
 
     @Override

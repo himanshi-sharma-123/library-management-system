@@ -5,4 +5,6 @@ import lombok.Data;
 @Data
 public class AddBookResponse extends BaseResponse{
      private Integer id;
+     private String message;
+
 }

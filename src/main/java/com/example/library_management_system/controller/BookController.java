@@ -6,6 +6,7 @@ import com.example.library_management_system.dto.response.AddBookResponse;
 import com.example.library_management_system.dto.response.AvailableBookResponse;
 import com.example.library_management_system.dto.response.BorrowBookResponse;
 import com.example.library_management_system.enums.ResponseStatus;
+import com.example.library_management_system.enums.UserType;
 import com.example.library_management_system.model.Book;
 import com.example.library_management_system.model.UserPrincipal;
 import com.example.library_management_system.service.BookService;
@@ -24,15 +25,23 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping("/api/book/add")
-    public AddBookResponse addBook(@RequestBody AddBookRequest bookRequest){
+    public AddBookResponse addBook(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody AddBookRequest bookRequest){
         AddBookResponse response = new AddBookResponse();
+
+        if (userPrincipal.getUserType() != UserType.ADMIN) {
+            response.setResponseStatus(ResponseStatus.FAILED);
+            response.setMessage("You are not authorized to perform this action.");
+            return response;
+        }
         try {
             Book savedBook = bookService.addBook(bookRequest);
             response.setId(savedBook.getId());
             response.setResponseStatus(ResponseStatus.SUCCESS);
+            response.setMessage("Book added successfully.");
         }catch (Exception e){
             e.printStackTrace();
             response.setResponseStatus(ResponseStatus.FAILED);
+            response.setMessage("Failed to add book.");
         }
         return response;
     }
