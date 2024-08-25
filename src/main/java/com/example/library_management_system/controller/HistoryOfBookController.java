@@ -33,7 +33,8 @@ public class HistoryOfBookController {
     }
 
     @GetMapping("/api/borrow/history")
-    public List<HistoryOfBook> getBorrowHistory(@AuthenticationPrincipal User user) {
+    public List<HistoryOfBook> getBorrowHistory(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        User user = userPrincipal.getUser();
         return historyOfBookService.getBorrowHistory(user);
     }
 }
