@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -24,12 +25,23 @@ public class UserController {
     public AddUserResponse register(@RequestBody AddUserRequest userRequest){
         AddUserResponse response = new AddUserResponse();
         try {
-            User registerUser = userService.register(userRequest);
-            response.setId(registerUser.getId());
-            response.setResponseStatus(com.example.library_management_system.enums.ResponseStatus.SUCCESS);
+            Optional<User> existingUser = userService.findByEmailOrUsername(userRequest.getEmail(), userRequest.getUsername());
+
+            if(existingUser.isPresent()){
+                response.setResponseStatus(ResponseStatus.FAILED);
+                response.setMessage("The User is already exist with the given username and password");
+            }else {
+                User registerUser = userService.register(userRequest);
+                System.out.println(registerUser);
+                response.setId(registerUser.getId());
+                response.setResponseStatus(ResponseStatus.SUCCESS);
+                response.setMessage("User registered successfully.");
+            }
         }catch (Exception e){
             e.printStackTrace();
             response.setResponseStatus(ResponseStatus.FAILED);
+            response.setMessage("An error occurred during registration.");
+
         }
         return response;
     }

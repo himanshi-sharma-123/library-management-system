@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -28,6 +29,10 @@ public class UserService {
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
+
+    public Optional<User> findByEmailOrUsername(String email, String username) {
+        return userRepo.findByEmailOrUsername(email, username);
+    }
 
     public User register(AddUserRequest request) {
         User user = new User();
