@@ -35,6 +35,9 @@ public class HistoryOfBookService {
         Book book = bookOptional.get();
         List<HistoryOfBook> borrowRecords = historyOfBookRepo.findByUserAndBookAndReturnDateIsNull(user, book);
 
+        System.out.println("User: " + user.getUsername() + ", Book: " + book.getBookName());
+
+
         if (borrowRecords.isEmpty()) {
             return "This book is not currently borrowed by you.";
         }

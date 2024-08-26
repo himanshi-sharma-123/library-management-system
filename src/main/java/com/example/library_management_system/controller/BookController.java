@@ -56,7 +56,8 @@ public class BookController {
     public BorrowBookResponse borrowBook(Authentication authentication, @RequestBody BorrowBookRequest request) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
-        return bookService.borrowBook(username, request);    }
+        return bookService.borrowBook(username, request);
+    }
 
     @GetMapping("/api/book/search")
     public List<Book> searchBooks(@RequestParam("keyword") String keyword) {

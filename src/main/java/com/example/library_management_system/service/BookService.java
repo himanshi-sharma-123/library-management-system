@@ -42,27 +42,31 @@ public class BookService {
     public BorrowBookResponse borrowBook(String username, BorrowBookRequest request) {
         BorrowBookResponse response = new BorrowBookResponse();
 
-        Book book = bookRepo.findById(request.getBookId())
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+        try {
+            Book book = bookRepo.findById(request.getBookId())
+                    .orElseThrow(() -> new RuntimeException("Book not found"));
 
-        if (book.getStock() <= 0) {
-            response.setMessage("Book is not available");
-            return response;
+            if (book.getStock() <= 0) {
+                response.setMessage("Book is not available");
+                return response;
+            }
+
+            User user = userRepo.findByUsername(username);
+
+
+            book.setStock(book.getStock() - 1);
+            bookRepo.save(book);
+
+            HistoryOfBook history = new HistoryOfBook();
+            history.setUser(user);
+            history.setBook(book);
+            history.setBorrowedDate(new Date());
+            historyOfBookRepo.save(history);
+
+            response.setMessage("Book borrowed successfully");
+        }catch (Exception e){
+            response.setMessage(e.getMessage());
         }
-
-        User user = userRepo.findByUsername(username);
-
-
-        book.setStock(book.getStock() - 1);
-        bookRepo.save(book);
-
-        HistoryOfBook history = new HistoryOfBook();
-        history.setUser(user);
-        history.setBook(book);
-        history.setBorrowedDate(new Date());
-        historyOfBookRepo.save(history);
-
-        response.setMessage("Book borrowed successfully");
         return response;
     }
 
