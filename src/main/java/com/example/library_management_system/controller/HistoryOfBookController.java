@@ -25,7 +25,7 @@ public class HistoryOfBookController {
     private BookService bookService;
 
 
-    @PostMapping("/api/book/return")
+    @PostMapping("/api/books/return")
     public ResponseEntity<String> returnBook(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("bookId") Integer bookId) {
         User user = userPrincipal.getUser();
         String result = historyOfBookService.returnBook(user, bookId);

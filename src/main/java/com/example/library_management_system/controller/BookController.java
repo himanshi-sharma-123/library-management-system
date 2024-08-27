@@ -47,19 +47,19 @@ public class BookController {
     }
 
 
-    @GetMapping("/api/book/getBooks")
+    @GetMapping("/api/books")
     public List<AvailableBookResponse> listAvailableBooks(){
         return bookService.listAvailableBooks();
     }
 
-    @PostMapping("/api/book/borrow")
+    @PostMapping("/api/books/borrow")
     public BorrowBookResponse borrowBook(Authentication authentication, @RequestBody BorrowBookRequest request) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
         return bookService.borrowBook(username, request);
     }
 
-    @GetMapping("/api/book/search")
+    @GetMapping("/api/books/search")
     public List<Book> searchBooks(@RequestParam("keyword") String keyword) {
         return bookService.searchBooks(keyword);
     }
