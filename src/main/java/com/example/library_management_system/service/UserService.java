@@ -6,12 +6,14 @@ import com.example.library_management_system.model.Book;
 import com.example.library_management_system.model.User;
 import com.example.library_management_system.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +25,9 @@ public class UserService {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @Autowired
     AuthenticationManager authManager;
@@ -46,10 +51,15 @@ public class UserService {
     public String verify(User user) {
         Authentication authentication = authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
 
-        if(authentication.isAuthenticated())
-            return jwtService.generateToken(user.getUsername());
-//            return "Success";
+        if(authentication.isAuthenticated()) {
 
+
+            redisTemplate.opsForValue().set(user.getUsername(), jwtService.generateToken( user.getUsername()), Duration.ofHours(2));
+//           redisTemplate.opsForValue().get()
+//            return jwtService.generateToken(user.getUsername());
+//            return "Success";
+            return redisTemplate.opsForValue().get(user.getUsername());
+        }
 
         return "fail";
     }

@@ -63,4 +63,9 @@ public class BookController {
     public List<Book> searchBooks(@RequestParam("keyword") String keyword) {
         return bookService.searchBooks(keyword);
     }
+
+//    @GetMapping("/api/book/search")
+//    public List<Book> searchBooks(@RequestParam("genre") String genre, @RequestParam("authorName") String authorName, @RequestParam("bookName") String bookName) {
+//        return bookService.searchBooks(genre, authorName, genre);
+//    }
 }

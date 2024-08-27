@@ -13,6 +13,7 @@ import com.example.library_management_system.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,7 +86,37 @@ public class BookService {
     }
 
     public List<Book> searchBooks(String keyword) {
+
         return bookRepo.findByBookNameOrAuthorNameOrGenre(keyword, keyword, keyword);
     }
+//    public List<Book> searchBooks(String genre, String authorName, String bookName) {
+//
+//        String key = genre + authorName + bookName;
+//        List<Book> value = (List<Book>) redisTemplate.opsForValue().get(key);
+//        if (value != null) {
+//            return value;
+//        }
+//        if (genre != null && authorName != null && bookName != null) {
+//            value = bookRepo.findByBookNameAndAuthorNameAndGenre(bookName, authorName, genre);
+//        } else if (genre != null && authorName != null) {
+//            value = bookRepo.findByAuthorNameAndGenre(authorName, genre);
+//        } else if (genre != null && bookName != null) {
+//            value = bookRepo.findByBookNameAndGenre(bookName, genre);
+//        } else if (authorName != null && bookName != null) {
+//            value = bookRepo.findByBookNameAndAuthorName(bookName, authorName);
+//        } else if (genre != null) {
+//            value = bookRepo.findByGenre(genre);
+//        } else if (authorName != null) {
+//            value = bookRepo.findByAuthorName(authorName);
+//        } else if (bookName != null) {
+//            value = bookRepo.findByBookName(bookName);
+//        } else {
+//            value = bookRepo.findAll();
+//        }
+//        redisTemplate.opsForValue().set(key, value);
+//
+//        return value;
+//
+//}
 
 }
