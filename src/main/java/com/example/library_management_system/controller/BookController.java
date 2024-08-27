@@ -59,13 +59,13 @@ public class BookController {
         return bookService.borrowBook(username, request);
     }
 
-    @GetMapping("/api/books/search")
-    public List<Book> searchBooks(@RequestParam("keyword") String keyword) {
-        return bookService.searchBooks(keyword);
-    }
-
-//    @GetMapping("/api/book/search")
-//    public List<Book> searchBooks(@RequestParam("genre") String genre, @RequestParam("authorName") String authorName, @RequestParam("bookName") String bookName) {
-//        return bookService.searchBooks(genre, authorName, genre);
+//    @GetMapping("/api/books/search")
+//    public List<Book> searchBooks(@RequestParam("keyword") String keyword) {
+//        return bookService.searchBooks(keyword);
 //    }
+
+    @GetMapping("/api/books/search")
+    public List<Book> searchBooks(@RequestParam(value = "genre", required = false) String genre, @RequestParam(value = "authorName", required = false) String authorName, @RequestParam(value = "bookName", required = false) String bookName) {
+        return bookService.searchBooks(genre, authorName, bookName);
+    }
 }

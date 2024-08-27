@@ -12,7 +12,7 @@ public interface BookRepo extends JpaRepository<Book, Integer> {
 
 //    List<Book> findByBookName(String bookName);
 
-    List<Book> findByBookNameOrAuthorNameOrGenre(String bookName, String authorName, String genre);
+//    List<Book> findByBookNameOrAuthorNameOrGenre(String bookName, String authorName, String genre);
 
     List<Book> findByBookNameAndAuthorNameAndGenre(String bookName, String authorName, String genre);
 

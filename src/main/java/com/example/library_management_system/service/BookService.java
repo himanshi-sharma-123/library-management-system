@@ -11,6 +11,7 @@ import com.example.library_management_system.repo.BookRepo;
 import com.example.library_management_system.repo.HistoryOfBookRepo;
 import com.example.library_management_system.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -29,6 +30,9 @@ public class BookService {
 
     @Autowired
     private HistoryOfBookRepo historyOfBookRepo;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     public Book addBook(AddBookRequest request) {
         Book book = new Book();
@@ -85,38 +89,38 @@ public class BookService {
         }).collect(Collectors.toList());
     }
 
-    public List<Book> searchBooks(String keyword) {
+//    public List<Book> searchBooks(String keyword) {
+//
+//        return bookRepo.findByBookNameOrAuthorNameOrGenre(keyword, keyword, keyword);
+//    }
+    public List<Book> searchBooks(String genre, String authorName, String bookName) {
 
-        return bookRepo.findByBookNameOrAuthorNameOrGenre(keyword, keyword, keyword);
-    }
-//    public List<Book> searchBooks(String genre, String authorName, String bookName) {
-//
-//        String key = genre + authorName + bookName;
-//        List<Book> value = (List<Book>) redisTemplate.opsForValue().get(key);
-//        if (value != null) {
-//            return value;
-//        }
-//        if (genre != null && authorName != null && bookName != null) {
-//            value = bookRepo.findByBookNameAndAuthorNameAndGenre(bookName, authorName, genre);
-//        } else if (genre != null && authorName != null) {
-//            value = bookRepo.findByAuthorNameAndGenre(authorName, genre);
-//        } else if (genre != null && bookName != null) {
-//            value = bookRepo.findByBookNameAndGenre(bookName, genre);
-//        } else if (authorName != null && bookName != null) {
-//            value = bookRepo.findByBookNameAndAuthorName(bookName, authorName);
-//        } else if (genre != null) {
-//            value = bookRepo.findByGenre(genre);
-//        } else if (authorName != null) {
-//            value = bookRepo.findByAuthorName(authorName);
-//        } else if (bookName != null) {
-//            value = bookRepo.findByBookName(bookName);
-//        } else {
-//            value = bookRepo.findAll();
-//        }
-//        redisTemplate.opsForValue().set(key, value);
-//
-//        return value;
-//
-//}
+     String key = genre + authorName + bookName;
+
+        List<Book> value = (List<Book>) redisTemplate.opsForValue().get(key);
+        if (value != null) {
+            return value;
+        }
+        if (genre != null && authorName != null && bookName != null) {
+            value = bookRepo.findByBookNameAndAuthorNameAndGenre(bookName, authorName, genre);
+        } else if (genre != null && authorName != null) {
+            value = bookRepo.findByAuthorNameAndGenre(authorName, genre);
+        } else if (genre != null && bookName != null) {
+            value = bookRepo.findByBookNameAndGenre(bookName, genre);
+        } else if (authorName != null && bookName != null) {
+            value = bookRepo.findByBookNameAndAuthorName(bookName, authorName);
+        } else if (genre != null) {
+            value = bookRepo.findByGenre(genre);
+        } else if (authorName != null) {
+            value = bookRepo.findByAuthorName(authorName);
+        } else if (bookName != null) {
+            value = bookRepo.findByBookName(bookName);
+        } else {
+            value = bookRepo.findAll();
+        }
+        redisTemplate.opsForValue().set(key, value, Duration.ofMinutes(10));
+        return value;
+
+}
 
 }
