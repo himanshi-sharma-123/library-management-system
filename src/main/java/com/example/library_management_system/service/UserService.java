@@ -54,11 +54,11 @@ public class UserService {
         if(authentication.isAuthenticated()) {
 
 
-            redisTemplate.opsForValue().set(user.getUsername(), jwtService.generateToken( user.getUsername()), Duration.ofHours(2));
-//           redisTemplate.opsForValue().get()
-//            return jwtService.generateToken(user.getUsername());
+//            redisTemplate.opsForValue().set(user.getUsername(), jwtService.generateToken( user.getUsername()), Duration.ofHours(2));
+
+            return jwtService.generateToken(user.getUsername());
 //            return "Success";
-            return redisTemplate.opsForValue().get(user.getUsername());
+//            return redisTemplate.opsForValue().get(user.getUsername());
         }
 
         return "fail";

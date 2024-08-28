@@ -44,9 +44,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            String redisToken = redisTemplate.opsForValue().get(username);
+//            String redisToken = redisTemplate.opsForValue().get(username);
 
-            if (redisToken != null && redisToken.equals(token)) {
+//            if (redisToken != null && redisToken.equals(token)) {
 
 
                 UserDetails userDetails = context.getBean(MyUserDetailsService.class).loadUserByUsername(username);
@@ -57,7 +57,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-        }
+//        }
         filterChain.doFilter(request, response);
 
     }

@@ -31,7 +31,7 @@ public class SpringConfig {
         return http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("api/register", "api/login", "api/books", "api/books/search", "/error")
+                        .requestMatchers("api/register", "api/login", "api/books", "api/books/search")
                         .permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
