@@ -11,6 +11,8 @@ import com.example.library_management_system.model.Book;
 import com.example.library_management_system.model.UserPrincipal;
 import com.example.library_management_system.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,10 +55,20 @@ public class BookController {
     }
 
     @PostMapping("/api/books/borrow")
-    public BorrowBookResponse borrowBook(Authentication authentication, @RequestBody BorrowBookRequest request) {
+    public ResponseEntity<BorrowBookResponse> borrowBook(Authentication authentication, @RequestBody BorrowBookRequest request) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
-        return bookService.borrowBook(username, request);
+
+        try {
+            BorrowBookResponse response = bookService.borrowBook(username, request);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            BorrowBookResponse response = new BorrowBookResponse();
+            response.setMessage("Unexpected error occurred");
+            response.setResponseStatus(ResponseStatus.FAILED);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+//        return bookService.borrowBook(username, request);
     }
 
 //    @GetMapping("/api/books/search")

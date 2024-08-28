@@ -4,6 +4,7 @@ import com.example.library_management_system.dto.request.AddBookRequest;
 import com.example.library_management_system.dto.request.BorrowBookRequest;
 import com.example.library_management_system.dto.response.AvailableBookResponse;
 import com.example.library_management_system.dto.response.BorrowBookResponse;
+import com.example.library_management_system.enums.ResponseStatus;
 import com.example.library_management_system.model.Book;
 import com.example.library_management_system.model.HistoryOfBook;
 import com.example.library_management_system.model.User;
@@ -69,6 +70,8 @@ public class BookService {
             historyOfBookRepo.save(history);
 
             response.setMessage("Book borrowed successfully");
+            response.setBookName(book.getBookName());
+            response.setResponseStatus(ResponseStatus.SUCCESS);
         }catch (Exception e){
             response.setMessage(e.getMessage());
         }
