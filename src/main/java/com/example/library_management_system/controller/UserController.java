@@ -8,6 +8,8 @@ import com.example.library_management_system.enums.ResponseStatus;
 import com.example.library_management_system.model.Book;
 import com.example.library_management_system.model.User;
 import com.example.library_management_system.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +23,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @PostMapping("/api/register")
     public AddUserResponse register(@RequestBody AddUserRequest userRequest){
         AddUserResponse response = new AddUserResponse();
+        logger.info("Add User Request : " + userRequest);
         try {
             Optional<User> existingUser = userService.findByEmailOrUsername(userRequest.getEmail(), userRequest.getUsername());
 
@@ -43,6 +48,7 @@ public class UserController {
             response.setMessage("An error occurred during registration.");
 
         }
+        logger.info("Add User Response : " + response);
         return response;
     }
 

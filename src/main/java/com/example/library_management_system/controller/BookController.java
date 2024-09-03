@@ -10,6 +10,8 @@ import com.example.library_management_system.enums.UserType;
 import com.example.library_management_system.model.Book;
 import com.example.library_management_system.model.UserPrincipal;
 import com.example.library_management_system.service.BookService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +28,13 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+    private static final Logger logger = LoggerFactory.getLogger(BookController.class);
+
     @PostMapping("/api/book/add")
     public AddBookResponse addBook(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody AddBookRequest bookRequest){
         AddBookResponse response = new AddBookResponse();
+
+        logger.info("Book add request : " + bookRequest);
 
         if (userPrincipal.getUserType() != UserType.ADMIN) {
             response.setResponseStatus(ResponseStatus.FAILED);
@@ -45,6 +51,7 @@ public class BookController {
             response.setResponseStatus(ResponseStatus.FAILED);
             response.setMessage("Failed to add book.");
         }
+        logger.info("Book add response : " + response);
         return response;
     }
 
@@ -59,8 +66,11 @@ public class BookController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
 
+        logger.info("Borrow Book request : " + request);
+
         try {
             BorrowBookResponse response = bookService.borrowBook(username, request);
+            logger.info("Borrow Book response : " + response);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             BorrowBookResponse response = new BorrowBookResponse();
@@ -68,6 +78,7 @@ public class BookController {
             response.setResponseStatus(ResponseStatus.FAILED);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+
 //        return bookService.borrowBook(username, request);
     }
 
